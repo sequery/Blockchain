@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Heisenberg">
+
+    <title>Blockchain ulanyjysy</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Blockchain ulanyjysy</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/index">Esasy hasap dörediji
+              </a>
+                <span class="sr-only">(current)</span>
+            </li>
+<!--            <li class="nav-item">-->
+<!--                  <a class="nav-link" href="/budget/change">Change Budget</a>-->
+<!--              </li>-->
+            <li class="nav-item">
+              <a class="nav-link" href="/make/transaction">Ugratmak</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/transactions">Gelen maglumatlar</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+
+
+          <div class="card-body">
+            <h4 class="card-title">Esasy hasap dörediji</h4>
+            <p class="card-text">Hasaby döretmek üçin aşakdaky düwmä basyň.</p>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+<div class="row">
+   <div class="container">
+    <form id="Name_form" method="post">
+      <br>
+        <div class="row">
+          <label class="col-sm-2">Ady :</label>
+          <div class="col-sm-10">
+            <input type="text" name="Name" id="Name" rows="2" class="form-control alert alert-secondary">
+
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <label class="col-sm-2">Familiýasy :</label>
+          <div class="col-sm-10">
+            <input type="text" name="Surname" id="Surname" rows="2" class="form-control alert alert-secondary">
+          </div>
+        </div>
+
+        <br>
+
+    </form>
+
+    </div>
+   <br>
+      <br> <br>
+</div>
+
+        <div class="row">
+          <label class="col-sm-2">Salgyň:</label>
+          <div class="col-sm-10">
+            <textarea id="public_key" rows="5" class="form-control" readonly></textarea>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <label class="col-sm-2">Gizlin açar:</label>
+          <div class="col-sm-10">
+            <textarea id="private_key" rows="5" class="form-control" readonly></textarea>
+          </div>
+        </div>
+
+        <br>
+
+        <!-- <div class="row">
+          <label class="col-sm-2">Ulanyjynyň açary:</label>
+          <div class="col-sm-10">
+            <textarea id="login_pass" rows="5" class="form-control" readonly></textarea>
+          </div>
+        </div> -->
+      <div class="row">
+         <div class="col-lg-4 col-md-4 col-sm-4"></div>
+            <div class="col-lg-4 col-md-4 col-sm-4" align="center">
+               <br>
+               <input type="button" id="Generate_Wallet" class="btn btn-primary btn-lg" value="Gapjygy döretmek" >
+            </div>
+         <div class="col-lg-4 col-md-4 col-sm-4"></div>
+      </div>
+
+        <br>
+
+        <div class="row" id="warning" style="display:none">
+          <div class="col-sm-12">
+            <div class="alert alert-danger" role="alert">
+              BELLIK
+              <ul>
+                <li>Gizlin açaryňyzy we salgyňyzy ýitirmäň!</li>
+                <li>Gizlin açaryňyzy paýlaşmaň!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+
+      $(function(){
+        $("#Generate_Wallet").click(function(){
+
+          $.ajax({
+            url: '/wallet/new',
+            type: 'GET',
+            success: function(response){
+              // document.getElementById("login_pass").innerHTML = response["login_pass"];
+              document.getElementById("private_key").innerHTML = response["private_key"];
+              document.getElementById("public_key").innerHTML = response["public_key"];
+              document.getElementById("warning").style.display = "block";
+            },
+            error: function(error){
+              console.log(error);
+            }
+          });
+        });
+      })
+
+      $(function () {
+          $("#Generate_Wallet").click(function () {
+
+            $.ajax({
+              url: '/wallet/new',
+              type: 'POST',
+              dataType : 'json',
+              data: $('#Name_form').serialize(),
+              success: function(response){
+
+                document.getElementById("Name").value = response["new_wallet"]["Name"];
+                document.getElementById("Surname").value = response["new_wallet"]["Surname"];
+                $("#basicModal").modal('show');
+
+              },
+              error: function(error){
+                console.log(error);
+              }
+            });
+
+          });
+      });
+        $(function () {
+          $("#Generate_Wallet").click(function () {
+                setTimeout(function(){
+                location.reload();
+                },100000 );
+
+
+
+          });
+      });
+
+    </script>
+
+
+
+  </body>
+
+</html>

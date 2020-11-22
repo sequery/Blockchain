@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Heisenberg">
+
+    <title>Blockchain ulanyjysy</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+
+  </head>
+
+<body>
+                    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Blockchain Client</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Wallet Generator</a>
+            </li>
+              <li class="nav-item active">
+                  <a class="nav-link" href="/budget/change">Change Budget</a>
+                  <span class="sr-only">(current)</span>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/make/transaction">Make Transaction</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/view/transactions">View Transactions</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+
+<div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+
+
+          <div class="card-body">
+            <h4 class="card-title">Change Budget</h4>
+            <p class="card-text">Click on the button below to make changes on your blockchain wallet</p>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+<div class="container alert alert-secondary">
+    <form id="Sign_In_Form">
+
+       <div class="row">
+          <label class="col-sm-2">Name:</label>
+          <div class="col-sm-10">
+            <input type="text" name="Name" id="Name" rows="2" class="form-control">
+
+          </div>
+        </div>
+
+      <br>
+
+       <div class="row">
+          <label class="col-sm-2">Surname:</label>
+          <div class="col-sm-10">
+            <input type="text" name="Surname" id="Surname" rows="2" class="form-control">
+
+          </div>
+        </div>
+
+      <br>
+
+        <div class="row">
+          <label class="col-sm-2">Login Password:</label>
+          <div class="col-sm-10">
+            <input type="text" name="Login_Pass" id="Login_Pass" rows="2" class="form-control">
+
+          </div>
+        </div>
+
+        <br>
+
+    </form>
+
+
+
+     <div class="row">
+          <div class="col-lg-12 text-center">
+            <input type="button" id="Sign_In" class="btn btn-primary btn-lg" value="Sign In">
+          </div>
+        </div>
+
+
+
+
+    </div>
+
+
+    <script>
+        $(function () {
+          $("#Sign_In").click(function () {
+
+            $.ajax({
+              url: '/budget/change',
+              type: 'POST',
+              dataType : 'json',
+              data: $('#Sign_In_Form').serialize(),
+              success: function(response){
+
+                document.getElementById("Name").value = response["change_budget"]["Name"];
+                document.getElementById("Surname").value = response["change_budget"]["Surname"];
+                document.getElementById("Login_Pass").value = response["change_budget"]["Login_Pass"];
+
+                $("#basicModal").modal('show');
+
+              },
+                error: function(error){
+                    console.log(error);
+              }
+            });
+
+          });
+        });
+    </script>
+
+
+
+</body>
+</html>
